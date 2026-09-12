@@ -1,0 +1,31 @@
+{
+  "format": "RV-KGF",
+  "version": "1.0",
+  "directed": true,
+  "source_workbook": "context-diagram.xlsx",
+  "view": "Full Map",
+  "export_datetime": "2026-01-09T08:12:47",
+  "styles": {
+    "Actor": { "description": "A human or external organization that interacts with the system.", "type": "node" },
+    "Application": { "description": "A software system boundary within scope of this diagram.", "type": "node" },
+    "Data Store": { "description": "A persistent store of data read or written by an application.", "type": "node" },
+    "Uses": { "description": "An actor interacting with an application, typically via a UI.", "type": "edge" },
+    "Reads/Writes": { "description": "An application persisting to or retrieving from a data store.", "type": "edge" }
+  },
+  "graph": {
+    "label": { "value": "Order Management System - Context Diagram", "type": "text" }
+  },
+  "nodes": [
+    { "id": "customer", "style": "Actor", "label": { "value": "Customer", "type": "text" } },
+    { "id": "support_agent", "style": "Actor", "label": { "value": "Support Agent", "type": "text" } },
+    { "id": "order_app", "style": "Application", "label": { "value": "Order Management System", "type": "text" }, "tooltip": { "value": "Handles order intake, fulfillment, and returns.", "type": "text" } },
+    { "id": "orders_db", "style": "Data Store", "label": { "value": "Orders Database", "type": "text" } },
+    { "id": "inventory_svc", "style": "Application", "label": { "value": "Inventory Service", "type": "text" } }
+  ],
+  "edges": [
+    { "id": "customer->order_app", "source": "customer", "target": "order_app", "style": "Uses", "label": { "value": "places orders", "type": "text" } },
+    { "id": "support_agent->order_app", "source": "support_agent", "target": "order_app", "style": "Uses", "label": { "value": "manages returns", "type": "text" } },
+    { "id": "order_app->orders_db", "source": "order_app", "target": "orders_db", "style": "Reads/Writes", "label": { "value": "persists order records", "type": "text" } },
+    { "id": "order_app->inventory_svc", "source": "order_app", "target": "inventory_svc", "label": { "value": "checks stock levels", "type": "text" }, "properties": { "protocol": "REST over HTTPS", "sync": true } }
+  ]
+}

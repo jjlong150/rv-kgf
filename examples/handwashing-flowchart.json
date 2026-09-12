@@ -1,0 +1,44 @@
+{
+  "format": "RV-KGF",
+  "version": "1.0",
+  "directed": true,
+  "source_workbook": "handwashing-flowchart.xlsx",
+  "view": "Full Procedure",
+  "export_datetime": "2026-03-02T11:41:09",
+  "styles": {
+    "Step": { "description": "A single required action in the hand-washing procedure.", "type": "node" },
+    "Phase": { "description": "A grouping of steps that make up one phase of the procedure.", "type": "cluster" },
+    "Next": { "description": "Sequential progression from one step to the next.", "type": "edge" },
+    "LoopBack": { "description": "Returning to an earlier step, e.g. to reapply soap.", "type": "edge" }
+  },
+  "graph": {
+    "label": { "value": "Proper Hand-Washing Procedure", "type": "text" }
+  },
+  "nodes": [
+    { "id": "cluster_1", "type": "cluster", "style": "Phase", "label": { "value": "Wetting & Soaping", "type": "text" } },
+    { "id": "cluster_2", "type": "cluster", "style": "Phase", "label": { "value": "Scrubbing", "type": "text" }, "cluster": "cluster_1" },
+    { "id": "wet_hands", "style": "Step", "label": { "value": "Wet hands with clean water", "type": "text" }, "cluster": "cluster_1" },
+    { "id": "apply_soap", "style": "Step", "label": { "value": "Apply soap", "type": "text" }, "cluster": "cluster_1" },
+    { "id": "scrub_palms", "style": "Step", "label": { "value": "Scrub palms and backs of hands", "type": "text" }, "cluster": "cluster_2" },
+    { "id": "scrub_between_fingers", "style": "Step", "label": { "value": "Scrub between fingers", "type": "text" }, "cluster": "cluster_2" },
+    { "id": "rinse", "style": "Step", "label": { "value": "Rinse hands under clean water", "type": "text" } },
+    { "id": "dry", "style": "Step", "label": { "value": "Dry with a clean towel", "type": "text" } }
+  ],
+  "edges": [
+    { "id": "wet_hands->apply_soap", "source": "wet_hands", "target": "apply_soap", "style": "Next" },
+    { "id": "apply_soap->scrub_palms", "source": "apply_soap", "target": "scrub_palms", "style": "Next" },
+    { "id": "scrub_palms->scrub_between_fingers", "source": "scrub_palms", "target": "scrub_between_fingers", "style": "Next" },
+    { "id": "scrub_between_fingers->rinse", "source": "scrub_between_fingers", "target": "rinse", "style": "Next" },
+    { "id": "rinse->dry", "source": "rinse", "target": "dry", "style": "Next" },
+    {
+      "id": "rinse->apply_soap",
+      "source": "rinse",
+      "target": "apply_soap",
+      "tailport": "w",
+      "headport": "s",
+      "style": "LoopBack",
+      "taillabel": { "value": "if under 20 sec elapsed", "type": "text" },
+      "headlabel": { "value": "reapply", "type": "text" }
+    }
+  ]
+}

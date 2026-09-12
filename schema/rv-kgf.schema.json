@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/jjlong150/rv-kgf/schema/rv-kgf.schema.json",
+  "title": "RV-KGF (Relationship Visualizer Knowledge Graph Format)",
+  "description": "Structural validation schema for RV-KGF documents produced by Excel to Graphviz. See ../docs/schema-reference.md for the full normative field descriptions.",
+  "type": "object",
+  "required": ["format", "version", "directed", "source_workbook", "view", "export_datetime", "nodes", "edges"],
+  "properties": {
+    "format": { "const": "RV-KGF" },
+    "version": { "type": "string" },
+    "directed": { "type": "boolean" },
+    "source_workbook": { "type": "string" },
+    "view": { "type": "string" },
+    "export_datetime": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}$",
+      "description": "Local time on the generating machine, no timezone offset."
+    },
+    "styles": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/styleDefinition" }
+    },
+    "graph": { "$ref": "#/$defs/graphObject" },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nodeObject" }
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/edgeObject" }
+    }
+  },
+  "additionalProperties": false,
+
+  "$defs": {
+    "labelField": {
+      "type": "object",
+      "required": ["value", "type"],
+      "properties": {
+        "value": { "type": "string" },
+        "type": { "enum": ["text", "html"] }
+      },
+      "additionalProperties": false
+    },
+
+    "propertiesObject": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": ["string", "number", "boolean"]
+      },
+      "description": "Open, user-defined key/value bag. Keys are not part of the schema. Must never be present as an empty object -- omit the whole 'properties' key instead."
+    },
+
+    "styleDefinition": {
+      "type": "object",
+      "properties": {
+        "description": { "type": "string" },
+        "type": { "enum": ["node", "edge", "cluster"] }
+      },
+      "additionalProperties": false
+    },
+
+    "graphObject": {
+      "type": "object",
+      "properties": {
+        "label": { "$ref": "#/$defs/labelField" },
+        "debuglabel": { "$ref": "#/$defs/labelField" },
+        "properties": { "$ref": "#/$defs/propertiesObject" }
+      },
+      "additionalProperties": false
+    },
+
+    "nodeObject": {
+      "type": "object",
+      "required": ["id"],
+      "properties": {
+        "id": { "type": "string" },
+        "type": { "const": "cluster" },
+        "style": { "type": "string" },
+        "label": { "$ref": "#/$defs/labelField" },
+        "xlabel": { "$ref": "#/$defs/labelField" },
+        "tooltip": { "$ref": "#/$defs/labelField" },
+        "debuglabel": { "$ref": "#/$defs/labelField" },
+        "cluster": { "type": "string" },
+        "defined": { "const": false },
+        "properties": { "$ref": "#/$defs/propertiesObject" }
+      },
+      "additionalProperties": false,
+      "if": {
+        "required": ["defined"]
+      },
+      "then": {
+        "description": "A synthesized orphan stand-in has no source row, so it must never carry a properties object.",
+        "not": { "required": ["properties"] }
+      }
+    },
+
+    "edgeObject": {
+      "type": "object",
+      "required": ["source", "target"],
+      "properties": {
+        "id": { "type": "string" },
+        "source": { "type": "string" },
+        "target": { "type": "string" },
+        "tailport": { "type": "string" },
+        "headport": { "type": "string" },
+        "style": { "type": "string" },
+        "label": { "$ref": "#/$defs/labelField" },
+        "xlabel": { "$ref": "#/$defs/labelField" },
+        "taillabel": { "$ref": "#/$defs/labelField" },
+        "headlabel": { "$ref": "#/$defs/labelField" },
+        "debuglabel": { "$ref": "#/$defs/labelField" },
+        "tooltip": { "$ref": "#/$defs/labelField" },
+        "properties": { "$ref": "#/$defs/propertiesObject" }
+      },
+      "additionalProperties": false
+    }
+  }
+}

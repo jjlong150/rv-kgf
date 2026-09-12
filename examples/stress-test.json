@@ -1,0 +1,31 @@
+{
+  "format": "RV-KGF",
+  "version": "1.0",
+  "directed": true,
+  "source_workbook": "stress-test.xlsx",
+  "view": "Full",
+  "export_datetime": "2026-02-18T14:05:31",
+  "styles": {
+    "Loop": { "description": "A process that feeds back into itself.", "type": "edge" },
+    "Extract": { "description": "A data extraction step.", "type": "node" }
+  },
+  "graph": {
+    "label": { "value": "Stress Test Diagram", "type": "text" }
+  },
+  "nodes": [
+    { "id": "a", "style": "Extract", "label": { "value": "<b>Apple</b> Pie", "type": "html" } },
+    { "id": "kkk", "label": { "value": "Node KKK", "type": "text" } },
+    { "id": "mmm", "label": { "value": "Node MMM", "type": "text" } },
+    { "id": "c", "defined": false },
+    { "id": "x", "defined": false },
+    { "id": "y", "defined": false }
+  ],
+  "edges": [
+    { "id": "a->a", "source": "a", "target": "a", "style": "Loop", "label": { "value": "self-check", "type": "text" } },
+    { "id": "kkk->mmm", "source": "kkk", "target": "mmm", "tailport": "e", "headport": "w", "label": { "value": "first pass", "type": "text" } },
+    { "id": "kkk->mmm", "source": "kkk", "target": "mmm", "tailport": "s", "headport": "n", "label": { "value": "second pass", "type": "text" } },
+    { "id": "kkk->mmm", "source": "kkk", "target": "mmm", "label": { "value": "third pass", "type": "text" } },
+    { "id": "c->x", "source": "c", "target": "x" },
+    { "id": "x->y", "source": "x", "target": "y" }
+  ]
+}
