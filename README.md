@@ -19,7 +19,7 @@ The tool now produces three complementary artifacts from one source of truth: th
 ```json
 {
   "format": "RV-KGF",
-  "version": "1.0",
+  "version": "1.1",
   "directed": true,
   "source_workbook": "supply-chain.xlsx",
   "view": "Full Map",
@@ -64,7 +64,7 @@ The tool now produces three complementary artifacts from one source of truth: th
 
 ## Versioning
 
-RV-KGF follows the `"version"` field embedded in every document (currently `"1.0"`). Changes are recorded in [`CHANGELOG.md`](CHANGELOG.md). The format is intentionally conservative about adding fields — see the non-normative "Possible Future Extensions" note in the schema reference for the one currently-reserved-but-unimplemented key (`property_definitions`).
+RV-KGF follows the `"version"` field embedded in every document (currently `"1.1"`). Changes are recorded in [`CHANGELOG.md`](CHANGELOG.md). The format is intentionally conservative about adding fields — see the non-normative "Possible Future Extensions" note in the schema reference for the one currently-reserved-but-unimplemented key (`property_definitions`).
 
 ## License
 

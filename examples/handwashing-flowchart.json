@@ -1,6 +1,6 @@
 {
   "format": "RV-KGF",
-  "version": "1.0",
+  "version": "1.1",
   "directed": true,
   "source_workbook": "handwashing-flowchart.xlsx",
   "view": "Full Procedure",

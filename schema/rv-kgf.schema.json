@@ -56,7 +56,8 @@
       "type": "object",
       "properties": {
         "description": { "type": "string" },
-        "type": { "enum": ["node", "edge", "cluster"] }
+        "type": { "enum": ["node", "edge", "cluster"] },
+        "properties": { "$ref": "#/$defs/propertiesObject" }
       },
       "additionalProperties": false
     },

@@ -1,6 +1,6 @@
 # RV-KGF Schema Reference
 
-Version documented: **1.0**
+Version documented: **1.1**
 
 This document specifies every field in an RV-KGF document. For *why* the schema is shaped this way, see [`design-rationale.md`](design-rationale.md). For a machine-readable version of these rules, see [`../schema/rv-kgf.schema.json`](../schema/rv-kgf.schema.json).
 
@@ -17,7 +17,7 @@ This document specifies every field in an RV-KGF document. For *why* the schema 
 ```json
 {
   "format": "RV-KGF",
-  "version": "1.0",
+  "version": "1.1",
   "directed": true,
   "source_workbook": "<Excel workbook file name>",
   "view": "<view name>",
@@ -49,16 +49,22 @@ This document specifies every field in an RV-KGF document. For *why* the schema 
 ```json
 "styles": {
   "Call Center Agent": { "description": "A human employee who answers telephone calls from customers.", "type": "node" },
-  "Flow": { "description": "A physical or informational transfer between two parties.", "type": "edge" }
+  "Flow": { "description": "A physical or informational transfer between two parties.", "type": "edge" },
+  "https-post-json": {
+    "description": "Makes a web request sending JSON via POST method over HTTPS.",
+    "type": "edge",
+    "properties": { "encrypted": true, "status": "allowed" }
+  }
 }
 ```
 
 - Keyed by style name, exactly as authored on the workbook's `styles` worksheet.
 - `description` — free text from the `styles` worksheet's `description` column, documenting what the style/category *means* — the JSON/text equivalent of a visual legend (which is itself excluded from JSON as furniture; see [Design Rationale §G](design-rationale.md#g-furniture-non-semantic-row-filtering)).
 - `type` — one of `"node"`, `"edge"`, or `"cluster"`, describing what kind of element the style applies to.
+- `properties` — optional. Same shape and value-typing rules as the [Properties object](#7-properties-object) used elsewhere in the format. Lets a style category carry structured, **organization-specific facts** that are true of every element using that style, distinct from what `description` documents and distinct from the style's visual rendering. See [Design Rationale §J](design-rationale.md#j-styles-may-carry-their-own-properties-separate-from-description) for why this is a separate field from `description` rather than folded into it.
 - **Scope:** only style names actually **referenced** by a node, edge, or the graph object in *this specific export* are included — not the full worksheet. Purely structural style names (cluster brace markers, legend rows, transparent helper edges) are excluded from the export entirely (see furniture filtering) and so never appear here.
-- A style with no authored description simply has no `description` key, or the whole style is omitted from `styles` if never referenced — there is no placeholder value.
-- The entire `styles` key is omitted when no referenced style has a description to report.
+- A style with no authored description simply has no `description` key, and a style with no authored properties simply has no `properties` key (never `"properties": {}`) — or the whole style is omitted from `styles` if never referenced. There is no placeholder value for either field.
+- The entire `styles` key is omitted only when no referenced style has a `description` or `properties` to report.
 
 ---
 

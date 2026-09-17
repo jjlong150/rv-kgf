@@ -126,6 +126,20 @@ Graphviz's own documentation confirms these defaults are **scoped to the current
 
 This scoping requirement is met with a **stack of scopes** — the same stack structure already needed for cluster-parent tracking, unified into one data structure rather than kept as two structures that would need to be manually synchronized.
 
+### J. Styles may carry their own `properties`, separate from `description`
+
+`description` documents what a style **means**, objectively, in a way that holds regardless of who's reading the diagram.
+
+For example, a style named `https-post-json` can represent making a web request sending JSON via POST over HTTPS. But two organizations can look at that same objective fact and reach opposite conclusions about it. One permits HTTPS-only internal traffic and disallows plaintext HTTP entirely; another, migrating a legacy system, currently allows HTTP with a remediation deadline. Neither organization's policy changes what the style *means*, it changes how that meaning is **evaluated**, and that evaluation is exactly the kind of subjective, deployment-specific fact that has always lived in the DOT-level rendering, not in the workbook — green for `https-post-json`, red for `http-post-json` — because a color was the only place available to put it.
+
+That's a structural problem for the entire premise of RV-KGF: an AI consumer asked "does this design comply with corporate standards?" or "evaluate the security of this design" has no way to answer without access to the color a specific organization's Graphviz theme happened to assign. This ambiguity is the exact kind of rendering-layer reverse-engineering RV-KGF exists to eliminate (see [§2, the core philosophy](#2-the-idea-that-survived-export-before-compilation-not-after)).
+
+The fix is a style-level `properties` object, using the same open, typed key/value shape already defined for graph/node/edge `properties` (see [Schema Reference §7](schema-reference.md#7-properties-object)) — not a new mechanism, just the existing one made available in a new place. `https-post-json` keeps one universal `description`; each organization's own `styles` worksheet then attaches its own `properties`, e.g. `encrypted=true status="allowed"` at one company, `encrypted=true status="allowed, pending TLS 1.3 upgrade"` at another. The description never has to change to reflect a policy difference, and the policy fact becomes a real, queryable, typed value instead of a color that only means something to whoever built the legend.
+
+These subjective values are deliberately **not** folded into `description` as more prose, for the same reason node/edge `properties` were never folded into `label` as more prose: free text is for a human to read, and a typed key/value pair is for a machine to filter, aggregate, and reason over. 
+
+Keeping `properties` structurally identical across graph, node, edge, *and now style* means a consumer needs exactly one parsing rule for "how do I read a properties object," not a special case for styles.
+
 ## Future extensibility
 
 Standalone converter modules — for example, a Cypher/Neo4j exporter, or an RDF/JSON-LD converter — that consume RV-KGF as input and emit another graph format as output are explicitly **future, user-built work, not part of the internal roadmap**. They are meant to be decoupled tools fed only by this public schema, never touching the producing tool's internals. This keeps RV-KGF's own scope bounded to "export the facts correctly" and leaves format-specific conversion to tools purpose-built for each target ecosystem.
