@@ -1,6 +1,6 @@
-# RV-KGF — Relationship Visualizer Knowledge Graph Format
+# RV-KGF - Relationship Visualizer Knowledge Graph Format
 
-**RV-KGF** is the JSON export schema produced by [Excel to Graphviz](https://exceltographviz.com/) ([jjlong150/ExcelToGraphviz](https://github.com/jjlong150/ExcelToGraphviz)) for representing a diagram's relationship data as a clean, AI- and graph-database-ready knowledge graph — independent of any rendering instructions.
+**RV-KGF** is the JSON export schema produced by [Excel to Graphviz](https://exceltographviz.com/) ([jjlong150/ExcelToGraphviz](https://github.com/jjlong150/ExcelToGraphviz)) for representing a diagram's relationship data as a clean, AI- and graph-database-ready knowledge graph, independent of any rendering instructions.
 
 This repository is the format's specification: the schema reference, the design rationale, a comparison against established graph-serialization standards, a JSON Schema for validation, and worked examples.
 
